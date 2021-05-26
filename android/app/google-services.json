@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "634672097062",
+    "project_id": "expances-602ac",
+    "storage_bucket": "expances-602ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634672097062:android:23fa3419b699859843c3e7",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "634672097062-lou0p3fkrosjvjiiq8p7a6s5tfj05ruf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOCsK644U1_wUwGlwI5pfhA82VF_xgCu8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "634672097062-lou0p3fkrosjvjiiq8p7a6s5tfj05ruf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
