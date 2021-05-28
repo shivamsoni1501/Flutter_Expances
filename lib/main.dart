@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/model/constants.dart';
+import 'package:flutter_application_1/model/transacitonClasss.dart';
 import 'package:flutter_application_1/widget/FormWidget.dart';
 import 'package:flutter_application_1/widget/chatBox.dart';
 import 'package:flutter_application_1/widget/transactionswidget.dart';
@@ -32,25 +33,38 @@ class _MyAppState extends State<MyApp> {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
       enableDrag: true,
+      isScrollControlled: true,
       elevation: 20,
       barrierColor: customTheme['primaryDark'].withAlpha(100),
       context: context,
       builder: (context) {
-        return InputFormW(callback: callbackBottomS);
+        return InputFormW();
       },
-    );
+    ).then((value) => setState(() {}));
   }
 
-  callbackBottomS() {
-    setState(() {});
+  callBack() => setState(() {});
+
+  @override
+  void initState() {
+    super.initState();
+    ModelTransactions.addTransaction(
+        'efwe', DateTime.now(), 12, 'Shivam', 'Abhay');
+    ModelTransactions.addTransaction(
+        'efwe', DateTime.now(), 12, 'Shivam', 'Abhay');
   }
 
   @override
   Widget build(BuildContext context) {
+    if (screenSize == null) {
+      Size size = MediaQuery.of(context).size;
+      screenSize = Size(size.width < 400 ? size.width : 400, size.height);
+    }
     AppBar appBar = AppBar(
       centerTitle: true,
       backgroundColor: customTheme['primary'],
       elevation: 12,
+      toolbarHeight: 70,
       title: Text(
         'Expances',
         style: TextStyle(
@@ -69,19 +83,22 @@ class _MyAppState extends State<MyApp> {
     return Scaffold(
       appBar: appBar,
       backgroundColor: customTheme['background'],
-      body: Column(
+      body: Stack(
+        alignment: Alignment.topCenter,
+        // fit: StackFit.expand,
         children: [
-          ChartBoxW(),
-          Expanded(
-            child: TransactionsW(),
+          Container(
+            width: double.infinity,
+            // height: double.infinity,
           ),
+          ChartBoxW(),
+          TransactionsW(callBack: callBack),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         elevation: 10,
         backgroundColor: customTheme['primary'],
         onPressed: () {
-          setState(() {});
           showBottomSheet(context);
         },
         foregroundColor: customTheme['background'],

@@ -5,17 +5,15 @@ import 'package:intl/intl.dart';
 // import 'package:flutter_application_1/model/transacitonClasss.dart';
 
 class InputFormW extends StatefulWidget {
-  final Function callback;
-
-  InputFormW({Key key, this.callback}) : super(key: key);
+  InputFormW({Key key}) : super(key: key);
 
   @override
   _InputFormWState createState() => _InputFormWState();
 }
 
 class _InputFormWState extends State<InputFormW> {
-  String title, lable;
-  int amount;
+  String title = 'Shopping', from = 'N/A', to = 'N/A';
+  int amount = 0;
   DateTime pickedDate;
 
   inputDecoration(String title) {
@@ -41,6 +39,12 @@ class _InputFormWState extends State<InputFormW> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    pickedDate = DateTime.now();
+  }
+
   datePicker(context) {
     showDatePicker(
       context: context,
@@ -53,6 +57,7 @@ class _InputFormWState extends State<InputFormW> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // height: 500,
       decoration: BoxDecoration(
         color: customTheme['background'],
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
@@ -63,6 +68,7 @@ class _InputFormWState extends State<InputFormW> {
       ),
       padding: const EdgeInsets.all(20),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -84,9 +90,7 @@ class _InputFormWState extends State<InputFormW> {
                 letterSpacing: 2),
             onChanged: (val) => title = val,
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          const SizedBox(height: 10),
           TextField(
             decoration: inputDecoration('Amount'),
             style: TextStyle(
@@ -96,6 +100,50 @@ class _InputFormWState extends State<InputFormW> {
             keyboardType: TextInputType.number,
             onChanged: (val) => amount = int.parse(val),
           ),
+          const SizedBox(height: 10),
+          TextField(
+            decoration: inputDecoration('from'),
+            style: TextStyle(
+                color: customTheme['primary'],
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2),
+            onChanged: (val) => from = val,
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            decoration: inputDecoration('to'),
+            style: TextStyle(
+                color: customTheme['primary'],
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2),
+            onChanged: (val) => to = val,
+          ),
+          SizedBox(height: 10),
+          Wrap(
+            children: ModelTransactions.methords
+                .map(
+                  (e) => GestureDetector(
+                    onTap: () {
+                      ModelTransactions.pickedMethord = e;
+                      setState(() {});
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                      // padding: EdgeInsets.symmetric(horizontal: 5),
+                      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: ModelTransactions.pickedMethord == e
+                            ? customTheme['primary']
+                            : customTheme['primaryLight'],
+                      ),
+                      child: Text(e),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+          SizedBox(height: 10),
           TextButton.icon(
             onPressed: () => datePicker(context),
             icon: Icon(
@@ -109,33 +157,19 @@ class _InputFormWState extends State<InputFormW> {
               style: TextStyle(color: customTheme['primary'], fontSize: 16),
             ),
           ),
-          Container(
-            margin: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: customTheme['primary'],
-              borderRadius: BorderRadius.circular(20),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            child: GestureDetector(
-              onTap: () {
-                ModelTransactions.transactions.add(Transaction(
-                    amount: amount, title: title, date: pickedDate));
-                // if (Constants.pref.get('count') != null) {
-                //   Constants.pref.getStringList('title').add(title);
-                //   Constants.pref.getStringList('amount').add(amount.toString());
-                //   Constants.pref
-                //       .getStringList('date')
-                //       .add(pickedDate.toString());
-                // } else {
-                //   Constants.pref.setStringList('title', [title]);
-                //   Constants.pref.setStringList('amount', [amount.toString()]);
-                //   Constants.pref.setStringList('date', [pickedDate.toString()]);
-                // }
-                widget.callback();
-                Navigator.pop(context);
-
-                // });
-              },
+          InkWell(
+            onTap: () {
+              ModelTransactions.addTransaction(
+                  title, pickedDate, amount, from, to);
+              Navigator.pop(context);
+            },
+            child: Container(
+              margin: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: customTheme['primary'],
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
               child: Text(
                 '+  Add',
                 style: TextStyle(
@@ -146,6 +180,7 @@ class _InputFormWState extends State<InputFormW> {
               ),
             ),
           ),
+          SizedBox(height: 20),
         ],
       ),
     );

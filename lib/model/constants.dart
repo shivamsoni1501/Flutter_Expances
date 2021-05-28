@@ -12,4 +12,7 @@ const Map<String, Color> customTheme = const {
   'background': Color(0xFFD8E3E7)
 };
 
+Size screenSize;
+double appBarSize = 70;
+
 // print(customTheme['primary']);
